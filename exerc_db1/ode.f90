@@ -3,26 +3,26 @@ program ode
   implicit none
 
   integer(8),parameter :: nm = 10  !- ステップ数
-  real(8)    :: t, h, x, xa
+  real(8)    :: t, dt, x, xa
   integer(8) :: i
 
-  h = 1.d0 / dble(nm) ! t方向の刻み幅の設定, 1.d0 は倍精度 1. x 10^0 を明示
-  x = 0.5d0
-  t = 0.d0
+  dt = 1.d0 / dble(nm)   !- t方向の刻み幅の設定, 1.d0 は倍精度 1. x 10^0 を明示
+  x = 0.5d0              !- 初期値
+  t = 0.d0               !- 初期のt
 
-  open(1,file='ode.dat',form='unformatted',access='stream')
-  write(1) nm
-  write(1) h
+  open(10,file='ode.dat',form='unformatted',access='stream')
+  write(10) nm
+  write(10) dt
 
-  print *,'                   t,                       x,                      true,                     error'
+  write(6,*) '                   t,                       x,                      true,                     error'
   do i = 0, nm-1
-     x = x + h*f(x,t) ! オイラー法
-     t = t + h
+     x = x + dt * f(x,t) ! オイラー法
+     t = t + dt
      xa = t**3 + 1.d0 / ( 1.d0 + exp(-t) )  !- 解析解(真値)
-     print*,t,x,xa,x-xa
-     write(1) x,xa
+     write(6,*) t,x,xa,x-xa
+     write(10) x,xa
   enddo
-  close(1)
+  close(10)
 
 contains          ! 以下の関数副プログラムを内部関数とする
   function f(x,t) ! 関数副プログラムの定義
