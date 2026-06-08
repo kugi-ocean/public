@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-f=open('oscillation.dat','rb')
+f=open('inertial.dat','rb')
 nm = np.fromfile(f,'i8',1)[0]
 h = np.fromfile(f,'d',1)[0]
 dat = np.fromfile(f,'d',(nm+1)*4).reshape((4,nm+1),order='F')
