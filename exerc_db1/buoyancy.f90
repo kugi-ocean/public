@@ -18,13 +18,13 @@ program main
   open(10,file='buoyancy.dat',form='unformatted',access='stream')
   write(10) nm
   write(10) dt_sec 
-  write(10) x
+  write(10) x(:)
 
   write(6,*) '                   t,                        z,                        w'
   do n = 0, nm-1
-     x = x + dt_sec * f(x,t_sec)    !- x,fとも2要素。オイラー法
+     x(:) = x(:) + dt_sec * f(x(:),t_sec)    !- x,fとも2要素。オイラー法
      t_sec = t_sec + dt_sec
-     if ( ( mod(n,(nm/10)) == 0 ).or.( n == nm-1 ) ) write(6,*) t_sec,x
+     if ( ( mod(n,(nm/10)) == 0 ).or.( n == nm-1 ) ) write(6,*) t_sec,x(:)
      write(10) x
   enddo
   close(10)

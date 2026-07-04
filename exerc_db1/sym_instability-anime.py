@@ -6,20 +6,25 @@ import matplotlib.lines as mlines
 f=open('sym.dat','rb')
 nm = np.fromfile(f,'i8',1)[0]
 h = np.fromfile(f,'d',1)[0]
+ay_ps2 = np.fromfile(f,'d',1)[0]
+az_ps2 = np.fromfile(f,'d',1)[0]
+by_ps2 = np.fromfile(f,'d',1)[0]
+bz_ps2 = np.fromfile(f,'d',1)[0]
 dat = np.fromfile(f,'d',(nm+1)*4).reshape((4,nm+1),order='F')
 y = dat[2]
 z = dat[3]
 t = np.arange(nm+1)*h
 f.close()
 
-xmin=-10.
-xmax=10.
+xmax = np.abs([y,z]).max()  #- 図示する範囲を最大値に合わせる
+xmin = - xmax
+
 xc=np.linspace(xmin,xmax,20)
 yc, zc = np.meshgrid(xc,xc)
 
 #- Set ac and bc following exp parameters.
-ac = (-yc + zc)*1.e-6
-bc = (-1.2*yc + zc)*1.e-6
+ac = ay_ps2 * yc + az_ps2 * zc
+bc = by_ps2 * yc + bz_ps2 * zc
 
 fig, ax = plt.subplots()
 plt.axis('scaled')
@@ -38,9 +43,9 @@ legend_lines = [
 plt.legend(handles=legend_lines)
 
 for i in range(nm+1):
-    ax.plot(y[i],z[i],'.',color='red')
+    ax.plot(y[i],z[i],'.',color='black')
     ax.set_title( f't = {t[i]} [sec]',loc='right',fontsize=10)
     plt.pause(0.1)
 
-
+plt.show()
 

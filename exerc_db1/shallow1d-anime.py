@@ -12,12 +12,16 @@ x = (np.arange(im)+0.5)*dx_m
 t = np.arange(nm+1)*h
 f.close()
 
+ymax = np.abs(eta).max()  #- 図示する範囲を最大値に合わせる
+
 fig, ax = plt.subplots()
 
 for i in range(nm+1):
     ax.cla()
-    ax.set_ylim(-0.01, 0.01)
     ax.plot(x,eta[:-1,i])
+    ax.set_ylim( -ymax, ymax )
+    ax.set_xlabel('x[m]')
+    ax.set_ylabel('eta[m]')
     ax.set_title( f't = {t[i]}',loc='right',fontsize=10)
     plt.pause(0.1)
 

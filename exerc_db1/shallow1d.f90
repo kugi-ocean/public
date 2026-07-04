@@ -34,15 +34,15 @@ program main
   write(10) x
   print *,'                   t,                  eta(middle),                 u(middle)'
   do n = 0, nm-1
-     k1 = dt_sec*f(x,t)
-     k2 = dt_sec*f( x+0.5d0*k1, t + 0.5d0*dt_sec)
-     k3 = dt_sec*f( x+0.5d0*k2, t + 0.5d0*dt_sec)
-     k4 = dt_sec*f( x+k3,       t + dt_sec)
-     x = x + ( k1 +2.d0*k2 +2.d0*k3 +k4 ) / 6.d0
+     k1(:,:) = dt_sec*f( x(:,:), t )
+     k2(:,:) = dt_sec*f( x(:,:)+0.5d0*k1(:,:), t + 0.5d0*dt_sec)
+     k3(:,:) = dt_sec*f( x(:,:)+0.5d0*k2(:,:), t + 0.5d0*dt_sec)
+     k4(:,:) = dt_sec*f( x(:,:)+k3(:,:),       t + dt_sec)
+     x(:,:) = x(:,:) + ( k1(:,:) +2.d0*k2(:,:) +2.d0*k3(:,:) +k4(:,:) ) / 6.d0
      x(0 ,1) = 0.d0  !- u 境界条件
      x(im,1) = 0.d0
      t = t + dt_sec
-     if ( ( mod(n,(nm/10)) == 0 ).or. ( n == nm-1 ) ) print*,t,x(im/2,0:1)
+     if ( ( mod(n,(nm/10)) == 0 ).or. ( n == nm-1 ) ) write(6,*) t,x(im/2,0:1)
      write(10) x
   enddo
   close(10)
