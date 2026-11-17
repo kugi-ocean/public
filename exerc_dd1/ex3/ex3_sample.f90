@@ -12,10 +12,10 @@ program main
   integer,parameter:: &
        im = 100, & ! x方向格子数
        jm =  62, & ! y方向格子数
-       km =  1   ! z方向格子数
+       km =  10   ! z方向格子数
 
   real(8),parameter:: &
-       t0_npm2  = -0.1d0, & ! 東西方向風応力
+       t0_npm2  = 0.1d0, & ! 東西方向風応力
        gr_mps2  = 9.80d0, & ! 重力加速度
        r0_kgpm3 = 1.d3, & ! 基準海水密度
        f0_psec  = 0.d-4, & ! コリオリ係数
@@ -26,7 +26,7 @@ program main
        av_m2ps  = 1.d-3, & ! 鉛直渦粘性係数
        dx_m     = 100.d3, & ! x方向格子幅
        dy_m     = 100.d3, & ! y方向格子幅
-       dz_m     = 200.d0, & ! z方向格子幅
+       dz_m     = 100.d0, & ! z方向格子幅
        dt_sec   = 100.d0, & ! 時間刻み幅
        time_to_start_sec   = 0.d0, & ! 実験開始時刻
        time_to_end_sec     = 86400.d0*30.d0*12.d0, &   ! 実験終了時刻（１年）
@@ -35,6 +35,9 @@ program main
        !output_interval_sec = dt_sec , & ! 出力時間間隔（１０日）
        asf      = 0.5d0 ! アセリンフィルター係数
   real(8),parameter :: fric_non = 0.0d0 / dz_m  !- linear friction coefficient (for Stommel 1948)
+  real(8),parameter :: ly_m = jm * dy_m, &
+                     & le_m = ly_m * 0.5d0     !- distance between southern end and equator
+!                     & le_m = ly_m * 0.d0      !- Stommel
 
   real(8),dimension(:,:,:):: &
        ua_mps(0:im+1,0:jm+1,0:km+1), & ! 東西流速
